@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blocksout-stats
+  labels:
+    app: blocksout-stats
+spec:
+  replicas:
+  selector:
+    matchLabels:
+      app: blocksout-stats
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: blocksout-stats
+    spec:
+      containers:
+        - name: blockscout-stack-stats
+          image: "ghcr.io/blockscout/stats:latest"
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8050
+              protocol: TCP
+            - name: http-metrics
+              containerPort: 6060
+              protocol: TCP
+          env:
+            - name: STATS_CHARTS__TEMPLATE_VALUES__NATIVE_COIN_SYMBOL
+              value: "postgres://stats:stats@stats-postgres:5432/stats"
+            - name: STATS_CHARTS__TEMPLATE_VALUES__NATIVE_COIN_SYMBOL
+              value: "ETH"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blocksout-stats
+  labels:
+    app: blocksout-stats
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 6060
+      targetPort: http-metrics
+      protocol: TCP
+      name: http-metrics
+  selector:
+    app: blocksout-stats
