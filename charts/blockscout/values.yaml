@@ -1,0 +1,164 @@
+# Default values for blockscout.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+backend:
+  replicaCount: 1
+  image:
+    Repository: blockscout/blockscout
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  resources:
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 2Gi
+  env:
+    - name: PORT
+      value: "4000"
+    - name: CHAIN_ID
+      value: "11155111"
+    - name: COIN
+      value: "ETH"
+    - name: COIN_NAME
+      value: "ETH"
+    - name: API_V2_ENABLED
+      value: "true"
+    - name: ETHEREUM_JSONRPC_HTTP_URL
+      value: "https://ethereum-sepolia.publicnode.com"
+    - name: ETHEREUM_JSONRPC_TRACE_URL
+      value: "https://ethereum-sepolia.publicnode.com"
+    - name: ETHEREUM_JSONRPC_WS_URL
+      value: "wss://ethereum-sepolia.publicnode.com"
+    - name: ETHEREUM_JSONRPC_VARIANT
+      value: "geth"
+    - name: DATABASE_URL
+      value: "postgresql://blockscout:blockscout@blockscout-postgres:5432/blockscout"
+    - name: ETHEREUM_JSONRPC_VARIANT
+      value: "geth"
+    - name: ETHEREUM_JSONRPC_VARIANT
+      value: "geth"
+    - name: ETHEREUM_JSONRPC_VARIANT
+      value: "geth"
+    - name: SECRET_KEY_BASE
+      value: "56NtB48ear7+wMSf0IQuWDAAazhpb31qyc7GiyspBP2vh7t5zlCsF5QDv76chXeN"
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+  postgres:
+    enabled: true
+frontend:
+  replicaCount: 1
+  image:
+    Repository: ghcr.io/blockscout/frontend
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 1Gi
+  env:
+    - name: NEXT_PUBLIC_NETWORK_ID
+      value: "1"
+    - name: NEXT_PUBLIC_NETWORK_NAME
+      value: "Ether"
+    - name: NEXT_PUBLIC_NETWORK_SHORT_NAME
+      value: "Ether"
+    - name: NEXT_PUBLIC_NETWORK_CURRENCY_NAME
+      value: "Ether"
+    - name: NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL
+      value: "ETH"
+    - name: NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS
+      value: "18"
+    - name: NEXT_PUBLIC_API_SPEC_URL
+      value: "https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml"
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+stats:
+  replicaCount: 1
+  image:
+    Repository: ghcr.io/blockscout/stats
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 1Gi
+  env:
+    - name: STATS_CHARTS__TEMPLATE_VALUES__NATIVE_COIN_SYMBOL
+      value: "postgres://stats:stats@stats-postgres:5432/stats"
+    - name: STATS_CHARTS__TEMPLATE_VALUES__NATIVE_COIN_SYMBOL
+      value: "ETH"
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+backendService:
+  type: ClusterIP
+  port: 4000
+
+resources: {}
+
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
