@@ -20,9 +20,9 @@ spec:
             - name: POSTGRES_DB
               value: "stats"
             - name: POSTGRES_USER
-              value: "stats"
+              value: "blockscout"
             - name: POSTGRES_PASSWORD
-              value: "stats"
+              value: "blockscout"
           ports:
             - containerPort: 5432
           volumeMounts:

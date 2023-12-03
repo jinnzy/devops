@@ -105,6 +105,25 @@ spec:
               value: "ETH"
             - name: API_V2_ENABLED
               value: "true"
+            - name: ETHEREUM_JSONRPC_HTTP_URL
+              value: "https://ethereum-sepolia.publicnode.com"
+            - name: ETHEREUM_JSONRPC_TRACE_URL
+              value: "https://ethereum-sepolia.publicnode.com"
+            - name: ETHEREUM_JSONRPC_WS_URL
+              value: "wss://ethereum-sepolia.publicnode.com"
+            - name: ETHEREUM_JSONRPC_VARIANT
+              value: "geth"
+            - name: DATABASE_URL
+              value: "postgresql://blockscout:blockscout@blockscout-postgres:5432/blockscout"
+            - name: ETHEREUM_JSONRPC_VARIANT
+              value: "geth"
+            - name: ETHEREUM_JSONRPC_VARIANT
+              value: "geth"
+            - name: ETHEREUM_JSONRPC_VARIANT
+              value: "geth"
+            - name: SECRET_KEY_BASE
+              value: "56NtB48ear7+wMSf0IQuWDAAazhpb31qyc7GiyspBP2vh7t5zlCsF5QDv76chXeN"
+
           readinessProbe:
             httpGet:
               path: /api/v1/health/readiness
